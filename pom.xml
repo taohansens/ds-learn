@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.taohansen</groupId>
-	<artifactId>project</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Starter Project</name>
-	<description>Demo starter project for Spring Boot with Security</description>
+	<artifactId>dslearn</artifactId>
+	<version>1.0</version>
+	<name>dslearn</name>
+	<description>DsLearn Projeto DevSuperior</description>
 	<properties>
 		<java.version>21</java.version>
 	</properties>
