@@ -3,6 +3,7 @@ package com.taohansen.dslearn.services;
 import com.taohansen.dslearn.dto.GameDTO;
 import com.taohansen.dslearn.dto.GameMinDTO;
 import com.taohansen.dslearn.entities.Game;
+import com.taohansen.dslearn.projections.GameMinProjection;
 import com.taohansen.dslearn.repositories.GameRepository;
 import com.taohansen.dslearn.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,11 @@ public class GameService {
 		Optional<Game> result = gameRepository.findById(id);
 		Game entity = result.orElseThrow(() -> new ResourceNotFoundException("Entity Game not found."));
 		return new GameDTO(entity);
+	}
+
+	@Transactional(readOnly = true)
+	public List<GameMinDTO> findByList(Long listId) {
+		List<GameMinProjection> result = gameRepository.searchByList(listId);
+		return result.stream().map(GameMinDTO::new).toList();
 	}
 }
