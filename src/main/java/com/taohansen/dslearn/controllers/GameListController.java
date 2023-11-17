@@ -35,7 +35,7 @@ public class GameListController {
 		return ResponseEntity.ok().body(result);
 	}
 
-	@PostMapping(value = "/{listId}/replacement")
+	@PatchMapping(value = "/{listId}/replacement")
 	public ResponseEntity<Void> findByList(@PathVariable Long listId, @RequestBody ReplacementDTO body) {
 		gameListService.move(listId, body.getSourceIndex(), body.getDestinationIndex());
 		try {
