@@ -35,6 +35,9 @@ public class GameService {
 	@Transactional(readOnly = true)
 	public List<GameMinDTO> findByList(Long listId) {
 		List<GameMinProjection> result = gameRepository.searchByList(listId);
+		if(result.isEmpty()){
+			throw new ResourceNotFoundException("List not found");
+		}
 		return result.stream().map(GameMinDTO::new).toList();
 	}
 }

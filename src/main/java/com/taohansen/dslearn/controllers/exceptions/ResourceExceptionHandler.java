@@ -3,6 +3,7 @@ package com.taohansen.dslearn.controllers.exceptions;
 import java.time.Instant;
 
 import com.taohansen.dslearn.services.exceptions.DatabaseException;
+import com.taohansen.dslearn.services.exceptions.MoveNotAllowedException;
 import com.taohansen.dslearn.services.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,8 +42,20 @@ public class ResourceExceptionHandler {
 		err.setMessage(e.getMessage());
 		err.setPath(request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
-	}	
-	
+	}
+
+	@ExceptionHandler(MoveNotAllowedException.class)
+	public ResponseEntity<StandardErrorDTO> moveNotAllowed(MoveNotAllowedException e, HttpServletRequest request) {
+		HttpStatus status = HttpStatus.PRECONDITION_FAILED;
+		StandardErrorDTO err = new StandardErrorDTO();
+		err.setTimestamp(Instant.now());
+		err.setStatus(status.value());
+		err.setError("Movement Exception");
+		err.setMessage(e.getMessage());
+		err.setPath(request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ValidationErrorDTO> validation(MethodArgumentNotValidException e, HttpServletRequest request) {
 		HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;

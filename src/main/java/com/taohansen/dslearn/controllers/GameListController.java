@@ -2,14 +2,14 @@ package com.taohansen.dslearn.controllers;
 
 import com.taohansen.dslearn.dto.GameListDTO;
 import com.taohansen.dslearn.dto.GameMinDTO;
+import com.taohansen.dslearn.dto.ReplacementDTO;
+import com.taohansen.dslearn.entities.Game;
 import com.taohansen.dslearn.services.GameListService;
 import com.taohansen.dslearn.services.GameService;
+import com.taohansen.dslearn.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,4 +34,15 @@ public class GameListController {
 		List<GameMinDTO> result = gameService.findByList(listId);
 		return ResponseEntity.ok().body(result);
 	}
+
+	@PostMapping(value = "/{listId}/replacement")
+	public ResponseEntity<Void> findByList(@PathVariable Long listId, @RequestBody ReplacementDTO body) {
+		gameListService.move(listId, body.getSourceIndex(), body.getDestinationIndex());
+		try {
+			gameService.findByList(listId);
+		} catch (Exception e) {
+            throw new ResourceNotFoundException("Entity Game not found.");
+		}
+        return null;
+    }
 }
