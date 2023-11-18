@@ -1,17 +1,29 @@
 package com.taohansen.dslearn.dto;
 
 import com.taohansen.dslearn.entities.Game;
+import com.taohansen.dslearn.services.validation.YearValid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.BeanUtils;
 
+@YearValid
 public class GameDTO {
     private Long id;
+    @Size(min = 3, max = 20, message = "O título deve ter entre 3 e 20 caracteres")
+    @NotBlank(message = "Campo obrigatório")
     private String title;
     private Double score;
     private Integer year;
     private String genre;
     private String platforms;
+    @URL(message = "Favor entrar com uma URL válida")
     private String imgUrl;
+    @NotBlank(message = "Campo obrigatório")
     private String shortDescription;
+    @NotBlank(message = "Campo obrigatório")
     private String longDescription;
 
     public GameDTO() {

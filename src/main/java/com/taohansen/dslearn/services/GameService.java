@@ -6,6 +6,8 @@ import com.taohansen.dslearn.entities.Game;
 import com.taohansen.dslearn.projections.GameMinProjection;
 import com.taohansen.dslearn.repositories.GameRepository;
 import com.taohansen.dslearn.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,5 +41,25 @@ public class GameService {
 			throw new ResourceNotFoundException("List not found");
 		}
 		return result.stream().map(GameMinDTO::new).toList();
+	}
+
+	@Transactional
+	public GameDTO insert(GameDTO dto) {
+		Game entity = new Game();
+		BeanUtils.copyProperties(dto, entity);
+		entity = gameRepository.save(entity);
+		return new GameDTO(entity);
+	}
+
+	@Transactional
+	public GameDTO update(Long id, GameDTO dto) {
+		try {
+			Game entity = gameRepository.getReferenceById(id);
+			BeanUtils.copyProperties(dto, entity);
+			entity = gameRepository.save(entity);
+			return new GameDTO(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Id " + id + " not found");
+		}
 	}
 }
