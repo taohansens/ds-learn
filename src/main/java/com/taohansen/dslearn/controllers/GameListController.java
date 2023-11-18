@@ -42,7 +42,7 @@ public class GameListController {
 	@PostMapping(value = "/{listId}/games")
 	public ResponseEntity<List<GameMinDTO>> insertGameOnList(@PathVariable Long listId, @RequestBody InsertGameOnListDTO dto) {
 		List<GameMinDTO> result = gameListService.insertOnList(listId, dto.getGameId());
-		return ResponseEntity.accepted().body(result);
+		return ResponseEntity.ok().body(result);
 	}
 
 	@GetMapping(value = "/{listId}/games")
